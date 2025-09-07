@@ -1,0 +1,432 @@
+
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:villachicken/src/pages/clients/address/welcome/clients_address_welcome_controller.dart';
+import 'package:villachicken/src/utils/my_colors.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+class ClientsAddressWelcomePage extends StatefulWidget {
+  const ClientsAddressWelcomePage({ Key ? key }) : super(key: key);
+
+  @override
+  State<ClientsAddressWelcomePage> createState() => _ClientsAddressWelcomePageState();
+}
+
+class _ClientsAddressWelcomePageState extends State<ClientsAddressWelcomePage> {
+  ClientsAddressWelcomeController _con= new ClientsAddressWelcomeController();
+  int select=0;
+  @override
+    void initState() {
+      // TODO: implement initState
+      super.initState();
+      //print('inica primer init');
+      //imageCache.clear();
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+        //print('inicia sheduler binding');
+        _con.init(context,refresh);
+       // imageCache.clear();
+      });
+    }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+           body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+               colors: [
+               // Colors.red.shade800.withOpacity(0.9),
+              //  Colors.red.shade300
+                MyColors.secondaryColor.withOpacity(0.9),
+                MyColors.secondaryColor.withOpacity(0.9)
+               ],
+               begin: const FractionalOffset(0.0, 0.4),
+               end: Alignment.topRight
+              )
+            ),
+            child: Column(
+              children: [
+                Container(
+                  //padding:EdgeInsets.only(top:20,left:30,right: 30),
+                  margin: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+                  width:MediaQuery.of(context).size.width ,
+                  height:300,
+                  child: Column(
+                    crossAxisAlignment:CrossAxisAlignment.start,
+                    children: [
+                      
+                     /* Row(
+                       // crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          //Icon(Icons.arrow_back_ios,size: 20,color: MyColors.secondpageiconcolor,),
+                              Container(
+                               
+                              margin: EdgeInsets.only(left: 0),
+                              padding: EdgeInsets.only(left: 0),
+                              ///alignment: Alignment.lef,
+                              child: Image.asset('assets/img/menu.png',width: 20,height: 20),
+                            ),
+
+                          //Expanded(child: Container()),
+                          //Icon(Icons.arrow_back_ios,size: 20,color: MyColors.secondpageiconcolor,)
+                        ],
+                       ),*/
+                       SizedBox(height: 10,),
+                       Row(
+                        children: [
+                            Container(
+                             width: 75,
+                             height: 149,
+                             margin: EdgeInsets.only(right:15),
+                              child: Image(image:  AssetImage('assets/img/villy_hello.png'),/*color: Colors.white,*/)
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(0),
+                              child: Column(
+                                children: [
+                                  Text('! Bienvenido ',
+                                        style: TextStyle(
+                                          fontSize: 25,
+                                          color: MyColors.homepagemainsmalltext
+                                        ),
+                                  ),
+                                    SizedBox(height: 5,),
+                                    Text(_con.user!=null?_con.user.user.nombres+' !':'',
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                            color: MyColors.homepagemainsmalltext
+                                          ),
+                                    )
+
+                                ],
+                              ),
+                            ),
+                        ],
+                       ),
+                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                             badge_rounded('Quiero','Delivery','assets/img/delivery.png',1),
+                             badge_rounded('Quiero','ir a recoger','assets/img/llevar.png',2),
+
+                           
+                        ],
+                       )
+
+
+
+                    ],
+                  ),
+                )
+                ,Expanded(
+                 child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: MyColors.fondocolor,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(70),
+                    )
+                  ),
+                  child: Container(
+                    //height: 100,
+                       
+                    child: Column(
+                      children: [
+                        SizedBox(height: 15,),
+                        title(),
+                        MyLocationWidget(),
+
+
+                        //SizedBox(height: 30,),
+                        //Text('sdasd'),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                 _listAddress()
+                              ],
+                            ),
+                          ),
+                        ),
+                        //title(),
+                        //MyLocationWidget(),
+                        //_listAddress()
+
+                      ],
+                    ),
+                  ),
+                  
+                 ),
+                )
+              ],
+            ),
+           ),
+    );
+  }
+ Widget badge_rounded(String title,String subtitle,String image,int index){
+  return                              Container(
+                              width: 120,
+                              height: 120,
+                              margin: EdgeInsets.only(right:15),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: _con.selectType==index?Border.all(
+                                  color:MyColors.yellowcolor,
+                                  width: 5,
+                                ):Border(),
+                                borderRadius: BorderRadius.circular(60),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(height: 5,),
+                                  Container(margin: EdgeInsets.only(),padding: EdgeInsets.all(0),child: Text(title,style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),)),
+                                  Container(margin: EdgeInsets.only(),child: Text(subtitle,style: TextStyle(fontSize: 12),)),
+                                  Container( width: 60,height: 60,child: Image(image:  AssetImage(image),/*color: Colors.white,*/))
+                                ],
+                              )
+                            );
+ }
+ Widget title(){
+  return Container(
+    width: double.infinity, 
+    margin: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+    
+    //height: 50,
+    decoration: BoxDecoration(
+        
+        //color:  Colors.white,
+       /* boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+        */
+    ),  
+    child: Padding(
+      padding: EdgeInsets.all(20),
+      child: Container(
+        child: Text(
+          'Elige tu ubicación',
+          style: TextStyle(
+            color:Colors.black87,
+            fontSize: 22,
+            fontWeight: FontWeight.w400
+          ),
+
+          ),
+      ),
+    ),
+
+  );
+ }
+Widget MyLocationWidget(){
+  return Container(
+    width: double.infinity, 
+    margin: EdgeInsets.symmetric(horizontal: 20,vertical: 0),
+    
+    height: 50,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color:  Colors.white,
+       /* boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+        */
+    ),  
+    child: InkWell(
+      onTap: (){
+        /*setState(() {
+           //select=index;
+           //print(select);
+        });
+        */
+        _con.openMap();
+      },  
+      child: Row(   
+        children: [
+          Container(
+            width: 30,
+            child: Icon(
+              //Icons.my_location_sharp,
+              Icons.add,
+              color: Colors.black,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Container(
+             //margin: EdgeInsets.only(bottom: 5),
+              child: Text(
+               'Nueva Dirección',
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                       fontFamily: 'Robotos',
+                       //color: Colors.black54,
+                       fontSize: 12,
+                       fontWeight: FontWeight.w500,
+                       color:  Colors.black,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          )
+        ],
+      ),
+      /*shape: RoundedRectangleBorder(
+       borderRadius: BorderRadius.circular(10)      
+      ),
+      borderSide: BorderSide(color: Colors.white),
+      */
+    ),
+  );
+ }
+
+
+Widget _listAddress(){
+
+   return 
+                   Skeletonizer(
+                     enabled: _con.enabled,
+                     child: Container(
+                       child: ListView.builder(
+                             physics: NeverScrollableScrollPhysics(),/* importante */
+                             shrinkWrap: true,
+                     
+                            //padding: EdgeInsets.symmetric(horizontal: 10,vertical: 20),
+                     
+                            itemCount: _con.address!=null ? _con.address.length : 0,
+                            itemBuilder: (_, index){
+                              //print(index);
+                              //return _radioSelectorAddress(_con.address[index],index);
+                              return customRadioREST(_con.address[index],index);
+                              
+                             //return Text('222');
+                            }
+                          ),
+                     ),
+                   );
+  }
+  Widget customRadioREST(address,int index){
+  return Container(
+    width: double.infinity, 
+    margin: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: select==index? MyColors.secondaryColor: Colors.white,
+       /* boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+        */
+        
+    ),  
+    child: GestureDetector(
+      onTap: (){
+        setState(() {
+           select=index;
+           _con.SelectAdd(index);
+        });
+      },  
+      child: Row(   
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 12),
+            width: 30,
+            child: Icon(
+              Icons.location_on_sharp,
+              color:select==index? MyColors.yellowcolor: Colors.black,
+            ),
+          ),
+          Expanded(
+            //padding: const EdgeInsets.all(8.0),
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(               
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                   Container(
+                    margin: EdgeInsets.only(bottom: 5),
+                     child: Text(
+                      _con.address[index]['ADD_ADI_NOMBRE'],
+                       maxLines: 3,
+                       overflow: TextOverflow.ellipsis,
+                       style: TextStyle(
+                              fontFamily: 'Robotos',
+                              //color: Colors.black54,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: select==index? Colors.white: Colors.black
+                       ),
+                     ),
+                   ),
+
+                   Container(
+                     height: 30,
+                     //width: MediaQuery.of(context).size.width*0.60,
+                     child: Text(
+                       _con.address[index]['ADD_DIR_DOMICILIO']+'-'+_con.address[index]['ADD_DIR_REFERENCIA'],
+                       maxLines: 2,
+                       overflow: TextOverflow.ellipsis,
+                       style: TextStyle(
+                                    fontFamily: 'Robotos',
+                                    color:select==index? Colors.white: Color(0xFFccc7c5),
+                                    fontSize: 12,
+                                    height: 1.2
+                                           
+                       ),
+                     ),
+                   ),
+                   Container(
+                      margin: EdgeInsets.only(bottom: 2),
+                     child: Text(
+                       _con.address[index]['ADD_ADI_TELEFONO'],
+                       maxLines: 3,
+                       overflow: TextOverflow.ellipsis,
+                       style: TextStyle(
+                                    fontFamily: 'Robotos',
+                                    color:select==index? Colors.white: Color(0xFFccc7c5),
+                                    fontSize: 12,
+                                    height: 1.2
+                        
+                       ),
+                     ),
+                   ),
+
+                ],
+              ),
+            ),
+          ),
+          
+        ],
+      ),
+      /*shape: RoundedRectangleBorder(
+       borderRadius: BorderRadius.circular(10)      
+      ),
+      borderSide: BorderSide(color: Colors.white),
+      */
+    ),
+  );
+ }
+
+ void refresh(){
+  setState(() {
+    
+  });
+ }
+
+}

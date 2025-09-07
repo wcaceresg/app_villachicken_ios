@@ -1,0 +1,154 @@
+
+
+import 'package:villachicken/src/pages/clients/address/map/clients_address_map_controller.backup';
+import 'package:villachicken/src/utils/my_colors.dart';
+import 'package:villachicken/src/widgets/no_data_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+class ClientAddressMapPage extends StatefulWidget {
+  const ClientAddressMapPage({ Key  ? key }) : super(key: key);
+
+  @override
+  State<ClientAddressMapPage> createState() => _ClientAddressMapPageState();
+}
+
+class _ClientAddressMapPageState extends State<ClientAddressMapPage> {
+      ClientAddressMapController _con=new ClientAddressMapController();
+  @override
+  void initState(){
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      _con.init(context, refresh);
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+
+    
+    return Scaffold(
+       /*appBar: AppBar(
+         title:Text('Ubica tu Direccion de mapa'),
+         backgroundColor: MyColors.primarycolor,
+       ),
+       */
+       body: Stack(
+         children: [
+           _googleMaps(),
+           Container(
+             alignment: Alignment.center,
+             child: _IconMyLocation(),
+           ),
+           Container(
+             margin: EdgeInsets.only(top: 30,left: 10),
+             alignment: Alignment.topLeft,
+             child:                       GestureDetector(
+                        onTap: (){ Navigator.pop(context);},
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.white
+                          ),
+                          child: Icon(
+                            Icons.arrow_back,
+                            color: Color(0xFF756d54),
+                          ),
+                        ),
+                      ),
+           ),
+
+           Container(
+             margin: EdgeInsets.only(top: 80),
+             alignment: Alignment.topCenter,
+             child: _cardPositionName(),
+           ),
+           Container(
+             alignment: Alignment.bottomCenter,
+             child: _ButtonAccept(),
+           )
+         ],
+       ),
+
+       
+
+    );
+  }
+  Widget _cardPositionName(){
+    return Container(
+      child: Card(
+        color: Colors.grey[800],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20)
+        ),
+         child: Container(
+           padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+           child: Text(
+             _con.addressName ?? '',
+            // 'calle falsa con carrete',
+             style: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.bold
+             ),
+            ),
+         ),
+      ),
+    );
+  }
+
+  Widget _ButtonAccept(){
+    return Container(
+      height: 50,
+      width:double.infinity,// toda la pantalla
+      margin: EdgeInsets.symmetric(vertical: 30,horizontal: 70),
+      child: ElevatedButton(
+        onPressed: _con.selectrefPoint,
+        child:Text(
+          'Siguiente'
+        ),
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30)
+          ),
+          primary: MyColors.primarycolor
+        ),
+        
+      ),
+    );
+  }
+
+  Widget _IconMyLocation(){
+    return Image.asset(
+      'assets/img/my_location.png',
+      width: 50,
+      height:50
+    );
+  }
+  Widget _googleMaps(){
+    return GoogleMap(
+        mapType: MapType.normal,
+        initialCameraPosition: _con.initialPosition,
+        onMapCreated: _con.onMapCreated,
+        myLocationButtonEnabled: false,
+        myLocationEnabled: false,
+        onCameraMove: (position){
+          _con.initialPosition=position;
+        },
+        onCameraIdle: ()async{
+          await  _con.setLocationDraggableInfo();
+        },
+      );
+  }
+
+
+  
+
+  
+  void refresh(){
+    setState(() {
+      
+    });
+  }
+}
