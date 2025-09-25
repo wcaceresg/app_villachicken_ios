@@ -15,8 +15,10 @@ late BuildContext context,dialogContext;
 UserProvider userprovider=new UserProvider();
 SharedPref _sharedPref=new SharedPref(); 
 final GoogleSignIn _googleSignIn = GoogleSignIn(
-  scopes: ['email'],
+  clientId: "57287907836-a1ijdl6mr2d46dno88c82pae2vg4nnbv.apps.googleusercontent.com",
+  scopes: ['email', 'profile', 'openid'],
 );
+
 
 Future  init(BuildContext context) async {
      this.context=context;
