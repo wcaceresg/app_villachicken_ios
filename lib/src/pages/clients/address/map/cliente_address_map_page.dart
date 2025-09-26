@@ -96,7 +96,7 @@ class _ClientAddressMapPageState extends State<ClientAddressMapPage> {
                ),*/               
                Container(
                  alignment: Alignment.bottomCenter,
-                 child: _ButtonAccept(),
+                 child: _con.addressLatLng!=null?_ButtonAccept():Container(),
                )
                /*Container(
                 child:Column(
@@ -240,7 +240,10 @@ class _ClientAddressMapPageState extends State<ClientAddressMapPage> {
           ),
         
           //primary: MyColors.primarycolor,
-          foregroundColor: Colors.white
+          foregroundColor: Colors.white,
+          
+          //disabledBackgroundColor: MyColors.secondaryColor,
+          backgroundColor: MyColors.secondaryColor
         ),
         
       ),

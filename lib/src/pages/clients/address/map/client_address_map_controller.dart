@@ -18,7 +18,8 @@ class ClientAddressMapController{
   
   var addressName;
   //LatLng addressLatLng = LatLng(); //by initializing it.
-  late LatLng addressLatLng;
+  //late LatLng addressLatLng;
+  LatLng? addressLatLng;
   AddressProvider addressprovider=new AddressProvider();
   CameraPosition initialPosition=CameraPosition(
     //target: LatLng(-12.1056334,-76.9686237),
@@ -75,23 +76,24 @@ class ClientAddressMapController{
  
   void selectrefPoint() async{
 
+
     Map<String,dynamic> data ={
       'address':addressName,
-      'lat':addressLatLng.latitude,
-      'lng':addressLatLng.longitude
+      'lat':addressLatLng!.latitude,
+      'lng':addressLatLng!.longitude
     };
-   // print(addressLatLng.latitude);
-   // print(addressLatLng.latitude.toString());
+   // print(addressLatLng!.latitude);
+   // print(addressLatLng!.latitude.toString());
     _onLoading();
-    final res=await addressprovider.validate_cobertura(addressLatLng.latitude.toString(),addressLatLng.longitude.toString());
+    final res=await addressprovider.validate_cobertura(addressLatLng!.latitude.toString(),addressLatLng!.longitude.toString());
     Navigator.pop(dialogContext);
     if(res['success']==true){
       
       //print('valido');
           Map<String,dynamic> data ={
       'address':addressName,
-      'lat':addressLatLng.latitude,
-      'lng':addressLatLng.longitude,
+      'lat':addressLatLng!.latitude,
+      'lng':addressLatLng!.longitude,
       'merchant_id':res['merchantid'],
       'idtienda':res['idtienda'],
       'recargo':res['recargo'],
@@ -102,8 +104,8 @@ class ClientAddressMapController{
 
     Map<String,dynamic> data ={
       'address':addressName,
-      'lat':addressLatLng.latitude,
-      'lng':addressLatLng.longitude,
+      'lat':addressLatLng!.latitude,
+      'lng':addressLatLng!.longitude,
       'merchant_id':'1234',
       'idtienda':'TI-1500',
       'recargo':0,

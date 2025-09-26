@@ -179,8 +179,58 @@ class UserProvider{
                   print(e);
                   return ResponseApi.fromJson({});
 
-          }          
-   }
+          }   
 
+
+
+   }
+     Future<ResponseApi> loginApple(String email,String nombre,String id_apple,String code,String token) async{
+          try{
+          var response = await http.post(
+              Uri.parse('$_url/api/register'),
+              headers:{ "Accept": "application/json","Content-Type": "application/x-www-form-urlencoded" } ,
+              body: { 
+                "nombres":""+nombre,
+                "genero": "1",
+                "tip_docu": "1",
+                "name":""+email,
+                "email":""+email,
+                "password":"123456",
+                "password_confirmation":"123456",
+                "codigo_autorizacion_apple":""+code,
+                "token_apple":""+token,
+                "id_user_apple":id_apple,
+                },
+              encoding: Encoding.getByName("utf-8")
+          );
+             print("response backend store ****************************");
+             print(response.body);
+             print("#status code"); // 400 error
+             print(response.statusCode);
+             final data=json.decode(response.body);
+             ResponseApi responseApi= ResponseApi.fromJson(data);
+             return responseApi; 
+
+          /*if(response.statusCode==201){
+            final data=json.decode(response.body);
+            //print(data);
+             ResponseApi responseApi= ResponseApi.fromJson(data);
+             return responseApi; 
+          }else{
+            final data=json.decode(response.body);
+             ResponseApi responseApi= ResponseApi.fromJson(data);
+             return responseApi; 
+          }
+          */
+          }catch (e) {
+                  print('error ES******************:$e');
+                  print(e);
+                  return ResponseApi.fromJson({});
+
+          }   
+
+          
+                 
+   }
 
 }

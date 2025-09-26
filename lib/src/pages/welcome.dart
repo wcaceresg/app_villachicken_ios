@@ -46,6 +46,7 @@ class _WelcomePageState extends State<WelcomePage> {
                      SizedBox(height: MediaQuery.of(context).size.height*0.35,),
                     _logo(),
                    // _button_facebook(),
+                   _button_ios(),
                     SizedBox(height: 10,),
                     _button_gmail(),
                     SizedBox(height: 10,),
@@ -143,6 +144,22 @@ class _WelcomePageState extends State<WelcomePage> {
     return BigButtonWidget(text: 'INGRESA CON TU FACEBOOK', onTap:(){},color: Colors.blue.shade900,horizontal: 80,size: 12,fontFamily: 'Glacial',);
   
   }
+  Widget _button_ios(){
+    return BigButtonWidget(text: 'Iniciar Sesión son Apple', 
+    leading: Image.asset(
+    'assets/img/apple_icon.png',
+    width:24,
+    height: 24,
+    color: Colors.white,
+    
+  ),
+    onTap:(){
+
+      _con.HandleLoginApple();
+    },color: Colors.black,horizontal: 80,size: 12,fontFamily: 'Glacial',);
+  
+  }
+
   Widget _button_gmail(){
       return BigButtonWidget(text: 'INGRESA CON TU GOOGLE',        leading: Image.asset(
     'assets/img/google.png',
