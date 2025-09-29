@@ -58,6 +58,7 @@ Future HandleLoginApple() async{
                 User user=User.fromJson(responseApi.data);
                 _sharedPref.save('user', user.toJson());
                 _sharedPref.save('user-pwd',  "${credential.userIdentifier}");
+                _sharedPref.save('user-type',  "ios");
                 Navigator.pushNamedAndRemoveUntil(context, 'client/home', (route) => false);
               }else
               {
@@ -70,6 +71,27 @@ Future HandleLoginApple() async{
   } 
   catch (e) {
              mySnackbar.show(context, "Respuesta inválida del servidor de Apple.");
+  }
+}
+Future loginGuest() async{
+  try {
+    _onLoading();
+    ResponseApi responseApi=await userprovider.login("guest@gmail.com", "123456");
+    Navigator.pop(dialogContext);
+    if(responseApi.code==201)
+    {
+      User user=User.fromJson(responseApi.data);
+      _sharedPref.save('user', user.toJson());
+      _sharedPref.save('user-pwd', '123456');
+      _sharedPref.save('user-type',  "guest");
+      Navigator.pushNamedAndRemoveUntil(context, 'client/main', (route) => false);
+    }else
+    {
+      mySnackbar.show(context, responseApi.error);
+    }
+  }
+  catch (e) {
+    
   }
 }
 

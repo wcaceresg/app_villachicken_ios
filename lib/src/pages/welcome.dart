@@ -51,6 +51,8 @@ class _WelcomePageState extends State<WelcomePage> {
                     _button_gmail(),
                     SizedBox(height: 10,),
                     _button_email(),
+                    SizedBox(height: 10,),
+                    _button_guest(),
                     _register()                      
                   ],
                 ),           
@@ -194,4 +196,16 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
             );
   }
+
+  Widget _button_guest(){
+    return BigButtonWidget(text: 'Continuar como invitado',
+ leading: Icon(
+     Icons.person_outline,
+    color: Colors.black,
+    size: 24,
+  ),   
+     onTap:(){_con.loginGuest();},color: Colors.white,horizontal: 80,size: 12,fontFamily: 'Glacial',colortext: MyColors.secondaryColor,);
+
+  }
+
 }

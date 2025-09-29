@@ -434,7 +434,7 @@ class _ClientsProductDetailPageState extends State<ClientsProductDetailPage> {
   }
   Widget _ButtonsPaqueteImage(){
     return                 Container(
-      margin: EdgeInsets.symmetric(vertical: 25,horizontal: 15),
+      margin: EdgeInsets.symmetric(vertical: 35,horizontal: 15),
       child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -453,7 +453,7 @@ class _ClientsProductDetailPageState extends State<ClientsProductDetailPage> {
                             ),
                           ),
                         ),
-                        GestureDetector(
+                        _con.user_type=="guest"?Container(height: 10,):GestureDetector(
                           onTap: (){_con.storeFavorite();},
                           child: Stack(
                             children: [

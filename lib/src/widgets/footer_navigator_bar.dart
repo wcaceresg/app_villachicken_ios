@@ -18,6 +18,7 @@ class _FooterNavigatorState extends   State<FooterNavigatorWidget>   {
   late BuildContext _context;
   SharedPref _sharedPref=new SharedPref();
   List carrito_sesion=[];
+  var user_type;
   @override
     void initState() {
       // TODO: implement initState
@@ -81,6 +82,7 @@ class _FooterNavigatorState extends   State<FooterNavigatorWidget>   {
         //refresh();
         
     }
+    user_type=await _sharedPref.read('user-type');
 
  }
   void gotoWelcome(){
@@ -101,7 +103,10 @@ class _FooterNavigatorState extends   State<FooterNavigatorWidget>   {
    Navigator.of(_context).pushNamedAndRemoveUntil('client/main',(route)=>false);
   }
   void NavigatorGoTo(int val){
-      print(val);
+    if(user_type=="guest"){   
+      
+    } else{
+      //print(val);
       if(val==1){
             //Scrolldo(0);
       }
@@ -113,5 +118,6 @@ class _FooterNavigatorState extends   State<FooterNavigatorWidget>   {
       else{
         
       }
+    }
   }
 }

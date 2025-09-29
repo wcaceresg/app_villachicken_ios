@@ -15,8 +15,10 @@ class SideBarWidget extends StatelessWidget {
   SharedPref _sharedPref=new SharedPref();
   late String nombre;
   var user;
+  var user_type;
    Future<User> fetchData() async {
      final user=User.fromJson(await _sharedPref.read('user') ?? {});
+     user_type=await _sharedPref.read('user-type');
      return user;
   }
 
@@ -79,7 +81,7 @@ class SideBarWidget extends StatelessWidget {
                       
                             ],
                           )),
-                          ListTile(
+                          user_type=="guest"?Container(): ListTile(
                             title: Text('Inicio'),
                             trailing: Icon(Icons.home),
                             onTap: ()=>{gotohome()},
@@ -92,24 +94,24 @@ class SideBarWidget extends StatelessWidget {
                             //leading: Icon(Icons.cancel),
                           ),
 
-                          ListTile(
+                          user_type!="guest"? ListTile(
                             title: Text('Mi perfil'),
                             trailing: Icon(Icons.person),
                             //leading: Icon(Icons.cancel),
                       
-                          ),
-                          ListTile(
+                          ):Container(),
+                          user_type!="guest"? ListTile(
                             title: Text('Mis pedidos'),
                             trailing: Icon(Icons.menu),
                             onTap: ()=>{goToPedidos()},
                           
-                          ),
-                          ListTile(
+                          ):Container(),
+                          user_type!="guest"? ListTile(
                             title: Text('Mis direcciones'),
                             trailing: Icon(Icons.location_on),
                             onTap: ()=>{gotoaddress()},
                           
-                          ),               
+                          ):Container(),               
                           ListTile(
                             title: Text('Cerrar Sesion'),
                             trailing: Icon(Icons.exit_to_app),

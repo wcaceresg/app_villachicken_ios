@@ -135,6 +135,7 @@ void registrar() async{
                         User user=User.fromJson(responseApi.data);
                         _sharedPref.save('user', user.toJson());
                         _sharedPref.save('user-pwd', contrasenia);
+                        _sharedPref.save('user-type', "email");
                         Navigator.pushNamedAndRemoveUntil(context, 'client/home', (route) => false);
                    }
             }          

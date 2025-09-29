@@ -61,6 +61,7 @@ Future  init(BuildContext context) async {
                         User user=User.fromJson(responseApi.data);
                         _sharedPref.save('user', user.toJson());
                         _sharedPref.save('user-pwd', '123456');
+                        _sharedPref.save('user-type',  "google");
                         Navigator.pushNamedAndRemoveUntil(context, 'client/home', (route) => false);
                    }
             }          

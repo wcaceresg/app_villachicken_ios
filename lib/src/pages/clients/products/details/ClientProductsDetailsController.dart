@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 //import 'dart:ffi';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:villachicken/src/models/user.dart';
 import 'package:villachicken/src/providers/carta_provider.dart';
 import 'package:villachicken/src/providers/favorites_provider.dart';
@@ -42,6 +44,7 @@ List sugestive=[];
  String paquete_tienda_id="";
 
    List<bool> checkedValues=[] ;
+   var user_type;
 Future init(BuildContext context,Function refresh,data) async{
   this.context=context;
    this.refresh=refresh;
@@ -53,6 +56,7 @@ Future init(BuildContext context,Function refresh,data) async{
    itemprueba=0;
    cantidad=1;
    initUserProvider();
+   user_type=await _sharedPref.read('user-type');
    if(await _sharedPref.contains('order')){
       carrito_sesion=await _sharedPref.read('order');
    }
@@ -168,6 +172,11 @@ void rest_cantidad(){
 }
 void agregar_carrito() async{
   //print(this.selectedProducts[0]);
+  if(user_type=="guest"){
+    //mySnackbar.show(context, "Debe iniciar sesión para agregar al carrito");
+    dialog("Debe iniciar sesión para agregar al carrito");
+   return; 
+  }
   if(await _sharedPref.contains('order')){
       carrito_sesion=await _sharedPref.read('order');
    }
@@ -318,6 +327,70 @@ void getSugestive(){
 }
 
 
+  Future dialog(message){
+    return showDialog(context: context, 
+       barrierDismissible: false,
+       builder: (context)=>AlertDialog(
+       //title: Text(message),
+              content: WillPopScope(
+                 onWillPop: () async => false, // False will prevent and true will allow to dismiss
+                child: Container(
+                  //height: MediaQuery.of(context).size.width*1,
+                  height: 300,
+                 // decoration: BoxDecoration(color: Colors.red),
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(left:20,right: 20),
+                  child: SingleChildScrollView(
+                    //padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                        //alignment: Alignment.center,
+                        //crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            'assets/img/billy-failed.png',
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(height: 20),
+                          Container(
+                            //padding: EdgeInsets.only(left:20,right: 20),
+                            child: Text(
+                              message,
+                              style: TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ),
+                ),
+              ),
+
+      // content: Text('el texto del cuadro'),
+       actions: <Widget>[
+        TextButton(onPressed:() {
+             Navigator.of(context).pop('Cancelar');
+             SystemNavigator.pop();
+        }, child: Text('Cancelar')),
+        TextButton(onPressed:() {
+            _sharedPref.logout(context);
+            Navigator.of(context).pop('Aceptar'); 
+            sleep(Duration(seconds: 1));
+            Navigator.pushNamedAndRemoveUntil(this.context, 'welcome', (route) => false);
+            
+            //Navigator.pushReplacementNamed(context, "/welcome");
+           
+             //SystemNavigator.pop();
+        }, child: Text('Aceptar')),
+
+        
+       ],
+    ));
+  }
+
 void _onLoading() {
   showDialog(
     context: context,
@@ -330,6 +403,7 @@ void _onLoading() {
 }
 
  void close_page(){
+  
    Navigator.pop(context);
  }
 

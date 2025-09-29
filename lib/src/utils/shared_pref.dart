@@ -28,6 +28,9 @@ class SharedPref{
    Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
    */
    await remove('user');
+   if(await contains('address_select')){
+     await remove('address_select');
+   }
    Navigator.pushNamedAndRemoveUntil(context, 'welcome', (route) => false);
 
   }  

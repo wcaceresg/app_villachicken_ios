@@ -50,6 +50,7 @@ void login() async{
       User user=User.fromJson(responseApi.data);
       _sharedPref.save('user', user.toJson());
       _sharedPref.save('user-pwd', password);
+      _sharedPref.save('user-type',  "email");
       //print(user.toJson());
       //Navigator.pushNamedAndRemoveUntil(context, 'client/main', (route) => false);
       Navigator.pushNamedAndRemoveUntil(context, 'client/home', (route) => false);

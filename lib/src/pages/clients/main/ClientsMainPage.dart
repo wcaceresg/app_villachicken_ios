@@ -84,7 +84,7 @@ class _ClientsMainPageState extends State<ClientsMainPage> {
             ),
           ),
           
-          bottomNavigationBar:FooterNavigatorWidget(),
+          bottomNavigationBar:_con.user_type=="guest"?Container(height: 0,): FooterNavigatorWidget(),
         
         ),
       ),
@@ -929,7 +929,7 @@ Widget  _TopBar2(){
                             ),
                           ),
 
-                    Expanded(
+                    _con.user_type=="guest"?Container(child: BigText(text: 'Carta'),):Expanded(
                       child: Container(
                           //width: 45,
                           height: 20,
@@ -974,7 +974,7 @@ Widget  _TopBar2(){
                         ),
                       ),
                     ),
-                     GestureDetector(
+                     _con.user_type=="guest"?Container(height: 45,):GestureDetector(
                       onTap: _con.ShowAddressBottomShet,
                      
                        child: Container(

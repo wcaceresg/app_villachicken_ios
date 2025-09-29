@@ -19,6 +19,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   late AnimationController controller;
   SplashController _con=new SplashController();
   int _start = 5;
+
   @override
   void initState(){
     super.initState();
@@ -83,13 +84,19 @@ class SplashController{
 late BuildContext context;
 UserProvider userprovider=new UserProvider();
 SharedPref _sharedPref=new SharedPref(); 
+var user_type;
 Future init(BuildContext context) async{
   this.context=context;
+  user_type=await _sharedPref.read('user-type');
 }
 void ok() async{
   if(await _sharedPref.contains('user')){
     try{
-      Navigator.pushNamedAndRemoveUntil(context, 'client/home', (route) => false);
+      if(user_type=="guest"){
+        Navigator.pushNamedAndRemoveUntil(context, 'client/main', (route) => false);
+      }else{
+        Navigator.pushNamedAndRemoveUntil(context, 'client/home', (route) => false);
+      }
      
     }catch(e){
        Navigator.pushNamedAndRemoveUntil(context, 'welcome', (route) => false);

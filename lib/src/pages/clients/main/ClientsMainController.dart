@@ -38,6 +38,7 @@ final ScrollController controller = ScrollController();
 bool enabled = true;
 List carrito_sesion=[];
 String carrito_length="";
+var user_type;
 Future init(BuildContext context,Function refresh) async{
   this.context=context;
  
@@ -49,6 +50,11 @@ Future init(BuildContext context,Function refresh) async{
       print("error slidet");
   }
   */
+  try {
+    user_type=await _sharedPref.read('user-type');
+  } catch (e) {
+    
+  }
   try {
        await cartaProvider.init(context,  await _sharedPref.read('user') ?? {});
       
